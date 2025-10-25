@@ -26,25 +26,13 @@ email address or ORCID}
 City, Country \\
 email address or ORCID}
 \and
+\IEEEauthorblockN{Mandicou Ba}
+\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
+\textit{name of organization (of Aff.)}\\
+City, Country \\
+email address or ORCID}
+\and
 \IEEEauthorblockN{Alassane Bah}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\and
-\IEEEauthorblockN{4\textsuperscript{th} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\and
-\IEEEauthorblockN{5\textsuperscript{th} Given Name Surname}
-\IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-\textit{name of organization (of Aff.)}\\
-City, Country \\
-email address or ORCID}
-\and
-\IEEEauthorblockN{6\textsuperscript{th} Given Name Surname}
 \IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
 \textit{name of organization (of Aff.)}\\
 City, Country \\
@@ -54,9 +42,9 @@ email address or ORCID}
 \maketitle
 
 \begin{abstract}
-The sustainable management of Socio-Ecological Systems (SES) presents a significant scientific challenge due to their non-linear dynamics and actor heterogeneity. The coupling of Agent-Based Models (ABM) and Multi-Agent Reinforcement Learning (MARL) is emerging as a powerful paradigm, offering a framework to simulate decentralized behaviors while learning optimal management policies. This paper presents a systematic literature review methodology (PRISMA) to map the current state-of-the-art at the intersection of these fields, focusing on applications in environmental sustainability.
+The sustainable management of complex Socio-Ecological Systems (SES) requires models that can capture both decentralized human behaviors and optimal long-term policies. The coupling of Agent-Based Models (ABM) and Multi-Agent Reinforcement Learning (MARL) is a relevant paradigm, but "full MARL" approaches often face critical barriers in computational cost and scalability. This paper presents a systematic review (PRISMA) to map the state-of-the-art of this coupling, focusing on applications in environmental sustainability.
 
-A multi-faceted query strategy—targeting core technology, thematic applications, and specific control architectures—is deployed across general (Scopus, Web of Science) and specialized (IEEE Xplore, ACM, AAMAS) databases, as well as top-tier AI conference proceedings. The review is temporally filtered from 2017 to capture the era of modern Deep MARL.
+A multi-faceted query strategy—targeting core technology (Q1), thematic applications (Q2), and hierarchical architectures (Q3)—was deployed across general (e.g., Scopus, Web of Science) and specialized (e.g., IEEE Xplore, ACM) databases, filtered from 2017 to capture the modern Deep MARL era.
 
 Our synthesis of the resulting corpus identifies key research gaps, particularly in model validation and scalability. Based on this analysis, we conclude that hierarchical architectures emerge as a highly promising research direction. These models, which can combine high-level learning agents with simpler behavioral rules, appear particularly suited to overcoming critical barriers in real-world deployments, such as scalability and effective application in data-poor environments.
 \end{abstract}
@@ -66,9 +54,9 @@ Multi-Agent Reinforcement Learning (MARL), Agent-Based Modeling (ABM), Socio-Eco
 \end{IEEEkeywords}
 
 \section{Introduction}
-The modeling and sustainable management of Socio-Ecological Systems (SES) constitute a significant scientific challenge. These systems, characterized by the coexistence of biophysical dynamics and human behaviors, exhibit inherent complexity, non-linear interactions, and actor heterogeneity, making the prediction of outcomes and the design of optimal interventions particularly arduous.
+The modeling and sustainable management of Socio-Ecological Systems (SES) constitute significant scientific challenges. These systems, characterized by the coexistence of biophysical dynamics and human behaviors, exhibit inherent complexity, non-linear interactions, and actor heterogeneity, making the prediction of outcomes and the design of optimal interventions particularly arduous.
 
-In response to this challenge, the bottom-up paradigm is frequently employed over traditional top-down models. Within this paradigm, Agent-Based Modeling (ABM) has become a prevalent simulation tool. While conceptually close to Multi-Agent Systems (MAS)—a broader field within computer science—ABMs are specifically valued in social and ecological sciences for their capacity to simulate decentralized interactions and observe the emergence of collective behaviors.
+In response to this challenge, the bottom-up paradigm is frequently employed over traditional top-down models. Within this paradigm, Agent-Based Modeling (ABM) has become a prevalent simulation tool. While conceptually close to Multi-Agent Systems (MAS), a broader field within computer science, ABMs are specifically valued in social and ecological sciences for their capacity to simulate decentralized interactions and observe the emergence of collective behaviors.
 
 However, traditional ABMs often face limitations in modeling complex and adaptive human decision-making under uncertainty. It is in this context that Reinforcement Learning (RL), and more specifically Multi-Agent Reinforcement Learning (MARL), offers a relevant methodological framework. MARL provides the formal tools for agents to learn decision-making policies through \textit{trial-and-error} interaction with dynamic environments.
 
@@ -78,7 +66,7 @@ A potential pathway to mitigate this complexity lies in hybrid or hierarchical c
 
 This paper is organized as follows: Section II presents our motivation and objectives, positioning this review within the context of a doctoral thesis. Section III details the systematic review methodology, including the PICO framework and PRISMA protocol used for our search. Section IV analyzes the selected corpus of papers under the "Related Works" heading. Based on this analysis, Section V discusses promising future research directions. Finally, Section VI concludes the paper.
 
-\section*{Motivation \& Objectives}
+\section{Motivation \& Objectives}
 
 Since the mid-20th century, human activities exacerbated by climate change have driven a steady decline of the Sahel’s fragile ecosystems. Under rising pressure on natural resources, pastoral and agro-pastoral communities have adopted new practices to mitigate underproduction risk. Yet these coping strategies have themselves contributed to slow but persistent damage: overgrazing, deforestation, soil erosion, and disruptions to the water and carbon cycles.
 
@@ -101,6 +89,12 @@ Therefore, before a specific model for the Sahel can be designed, a systematic a
 \end{enumerate}
 
 This review serves as the foundational justification for a doctoral thesis, ``An adaptive agent-based optimization model for carbon neutral pathways in agro-sylvo-pastoral systems in Senegal.'' The insights gathered from this analysis will directly inform the design of the novel hierarchical simulation platform proposed in that dissertation, which aims to provide a robust, adaptive decision-support tool for a low-carbon transition in the Sahel.
+
+\section{Background : Sequential Decision-Making}
+
+In this section, we prodide the relevant background on sequential decison-making.
+
+Present sequential decision making then the different approaches (MDP, RL, MARL,..)
 
 \section{Methodology}
 
@@ -264,6 +258,8 @@ In this subsection, we
 
 \section{Research Direction}
 
+\textbf{RAJOUTER l'image de l'Architecture Fonctionnelle}
+
 Our analysis of the recent literature reveals several structural trends. The strategic positioning of our doctoral research is articulated around these dynamics, which justify our focus on a hierarchical, constraint-based model.
 
 First, the dominant paradigm for coordination in MARL is Centralized Training for Decentralized Execution (CTDE). This approach offers a pragmatic compromise: during the training phase, a centralized module leverages global information (observations and actions of all agents) to overcome non-stationarity and facilitate coordinated learning. During execution, each agent acts autonomously based solely on its local observations, which is a realistic constraint for distributed systems. The macro-decision-maker (RL) / micro-agent (ABM) architecture we propose can be interpreted as a sophisticated, structured instance of this CTDE paradigm.
@@ -277,6 +273,12 @@ Finally, we note a growing trend away from simple scalar reward maximization and
 These identified trends---the prevalence of CTDE, the nascent state of SES applications, the necessity of hierarchical models to manage complexity, and the move towards constrained optimization---form the central justification for the model proposed in our doctoral research. Our work is positioned at the intersection of these four active research frontiers.
 
 \section{Conclusion}
+
+\textbf{Rappeler la problematique et les obecjtifs de l'article}
+
+\textbf{Quel a été la contribution de cet article?}
+
+\textbf{Les limites et les travaux futures.}
 
 In this paper, we conducted a systematic review of the literature at the intersection of Agent-Based Modeling and Multi-Agent Reinforcement Learning, guided by the PRISMA protocol. Our analysis revealed that while the field is active, its application to complex Socio-Ecological Systems remains nascent. We identified critical gaps in the dominant "full MARL" paradigm, namely a lack of scalability and a significant under-reporting of computational costs, which hinder practical application. In response, our analysis concludes that hierarchical and hybrid architectures, which combine high-level learning agents with simpler behavioral models, represent the most promising and scalable research direction. This approach, particularly when integrated with "Safe RL" concepts to enforce sustainability constraints, offers a viable pathway to developing the robust decision-support tools needed for real-world environmental management.
 
