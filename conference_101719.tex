@@ -94,7 +94,111 @@ This review serves as the foundational justification for a doctoral thesis, ``An
 
 In this section, we prodide the relevant background on sequential decison-making.
 
-Present sequential decision making then the different approaches (MDP, RL, MARL,..)
+\subsection{Markov Decision Processes (MDPs)}
+
+At the heart of managing complex systems, such as farming in the Sahel, lies the problem of \textbf{sequential decision-making}. During the growing seasons, a farmer must decide when to plant, what to plant, which fertilizers to use, and when to harvest in order to achieve a long-term production target. In such a setting, agents learn to make decisions by interacting with their environment through trial-and-error. This example brings to light two core challenges of sequential decision-making: \textbf{delayed feedback} (the consequences of an action are seen much later) and the \textbf{combinatorial explosion} of choices for the same goal.
+
+The mathematical framework designed to represent this problem is the \textbf{Markov Decision Process (MDP)}. It is founded on the \textbf{Markov Property}, which informally stipulates that, given the present state, the future is independent of the past history of states and actions.
+
+More formally, an MDP is defined as a quintuple $\langle \mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \gamma \rangle$ \cite{suttonReinforcementLearningIntroduction2014}, where:
+
+\begin{itemize}
+    \item $\mathcal{S}$ is the set of possible \textbf{states},information about all aspects
+of the past agent–environment interaction that makes a difference for the future of the system.
+    \item $\mathcal{A}$ is the set of possible \textbf{actions} that the agent can take.
+    \item $\mathcal{P}(s'|s, a)$ is the \textbf{transition function}: the probability of transitioning from state $s$ to state $s'$ after executing action $a$.
+    \item $\mathcal{R}(s, a)$ is the \textbf{reward function}: the immediate scalar reward received after executing action $a$ in state $s$.
+    \item $\gamma \in [0, 1]$ is the \textbf{discount factor}, which balances the importance of immediate versus future rewards.
+\end{itemize}
+
+Solving an MDP involves finding an optimal \textbf{policy} $\pi^{*}(a|s)$, which is a mapping from state to action that provides the agent with a strategy to maximize its \textbf{expected long-term return} (the discounted cumulative reward).
+
+The fundamental questions of "How do we compare policies?" and "How do we find an optimal policy?" are addressed by the concept of the \textbf{value function}, which is formalized by the \textbf{Bellman Equations} \cite{suttonReinforcementLearningIntroduction2014}. These recursive equations relate the value of a state (or a state-action pair) to the expected value of its successor states, providing the basis for iterative solution methods.
+
+\subsubsection{Bellman Equations}
+
+\textbf{State-Value Function ($V^{\pi}$):}
+$$V^{\pi}(s) = \mathbb{E}_{\pi} \left[ \sum_{k=0}^{\infty} \gamma^k R_{t+k+1} \mid S_t = s \right]$$
+
+\textbf{Action-Value Function ($Q^{\pi}$):}
+$$Q^{\pi}(s, a) = \mathcal{R}(s, a) + \gamma \sum_{s' \in \mathcal{S}} \mathcal{P}(s'|s, a) \sum_{a' \in \mathcal{A}} \pi(a'|s') Q^{\pi}(s', a')$$
+
+\noindent The optimal policy $\pi^{*}$ is found by maximizing the action-value function: $\pi^{*}(s) = \arg \max_{a \in \mathcal{A}} Q^{*}(s, a)$.
+
+\vspace{0.5em}
+\noindent As seen, the MDP provides a robust framework to represent the sequential decision-making problem. However, its core assumption of \textbf{full observability} of the system is often violated in real-world scenarios, such as our small-scale farmer example, where crucial information is hidden. This limitation leads to the generalization addressed by \textbf{Partially Observable Markov Decision Processes (POMDPs)}.
+
+\subsection{Partially Observable Markov Decision Processes (POMDPs) and Reinforcement Learning}
+
+The MDP framework's core assumption of full observability is often violated in practice. In many real-world complex systems—such as autonomous vehicles with limited sensor range or smart grids with incomplete metering—agents receive only a noisy and partial view of the environment. This scenario requires the generalization of the MDP to the \textbf{Partially Observable Markov Decision Process (POMDP)}.
+
+The POMDP extends the MDP tuple by adding an observation set $\Omega$ and an observation function $\mathcal{O}$: $\langle \mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \Omega, \mathcal{O}, \gamma \rangle$. Since the agent cannot condition its actions on the true state $S \in \mathcal{S}$, it must maintain a \textbf{belief state} $b(s)$. This belief is a probability distribution over the set of real states, representing the agent's uncertainty based on its entire action-observation history. Solving a POMDP involves finding a policy over this continuous belief space \cite{kaelblingPlanningActingPartially1998}.
+
+\subsubsection{Reinforcement Learning (RL)}
+
+Both MDPs and POMDPs can be solved using \textbf{Reinforcement Learning (RL)}. RL is a computational paradigm where an agent learns an optimal policy $\pi$ by maximizing its long-term expected reward through direct interaction (\textit{trial-and-error}) with the environment.
+
+RL algorithms are fundamentally based on the concept of \textbf{Temporal Difference (TD) Learning}, which involves updating the estimate of a value function toward a target value that includes a primary reward ($R_{t+1}$) and the value of the succeeding state ($V(S_{t+1})$). This bootstrapping approach allows learning without waiting for the final outcome.
+
+Key families of RL algorithms include:
+\begin{itemize}
+    \item \textbf{Value-Based Methods:} These methods focus on estimating the optimal action-value function, $Q^*(s, a)$. Examples include **Q-Learning** (off-policy) and **SARSA** (on-policy). When combined with function approximators like neural networks (leading to **Deep Q-Networks (DQN)** \cite{mnihHumanlevelControlDeep2015}), these methods can tackle large state spaces.
+    \item \textbf{Policy Gradient and Actor-Critic Methods:} These methods directly learn the policy $\pi$ (the \textbf{Actor}) and simultaneously learn a value function (the \textbf{Critic}) to estimate the advantage of actions, guiding the policy update. Examples include **Proximal Policy Optimization (PPO)** and **Soft Actor-Critic (SAC)**, which are known for stability and performance in continuous control tasks.
+\end{itemize}
+
+\subsection{Multi-Agent Reinforcement Learning (MARL): Core Challenges and Paradigms}
+
+The increasing prevalence of complex systems—such as robotic swarms, large-scale traffic networks, and distributed smart grids—necessitates extending the RL framework to environments featuring multiple interacting decision-makers. \textbf{Multi-Agent Reinforcement Learning (MARL)} formalizes the challenge of concurrent decision-making, where a set of agents $\mathcal{N} = \{1, \ldots, N\}$ interacts with a shared environment.
+
+This problem is typically formalized as a \textbf{Stochastic Game} (also known as a \textbf{Markov Game}) \cite{littmanMarkovGamesFramework1994}.
+
+\subsubsection{The Challenges: Non-Stationarity and Credit Assignment}
+
+The principal challenge in MARL stems from \textbf{environmental non-stationarity} \cite{perolatMultiagentReinforcementLearning2017}. From the perspective of any individual agent $i$, the environment is comprised of the physical world \textit{and} the collective policies of all other learning agents $\pi_{-i}$. Since these policies are constantly being updated, the environment perceived by agent $i$ is non-stationary, violating the fundamental Markovian assumption required for standard single-agent RL convergence.
+
+A secondary but crucial challenge in cooperative MARL is the \textbf{credit assignment problem}: determining how the scalar joint reward $R_{\text{total}}$ should be attributed to the individual actions of each agent.
+
+\subsubsection{The CTDE Paradigm and Key Frameworks}
+
+The dominant \textbf{framework} addressing both non-stationarity and credit assignment in cooperative MARL is the \textbf{Centralized Training, Decentralized Execution (CTDE) paradigm} \cite{loweMultiAgentActorCriticMixed2020}.
+
+The CTDE framework leverages the following structure:
+\begin{itemize}
+    \item \textbf{Centralized Training:} The critic leverages the complete system information (joint state $\mathbf{s}$, joint action $\mathbf{a}$) to stabilize learning and mitigate non-stationarity.
+    \item \textbf{Decentralized Execution:} Each agent's actor relies solely on its local observation $o_i$ to select actions $a_i$ during deployment, ensuring scalability and autonomy.
+\end{itemize}
+
+Key MARL frameworks built upon the CTDE paradigm include:
+\begin{itemize}
+    \item \textbf{QMIX} (Q-Learning extensions): This framework \cite{rashidQMIXMonotonicValue2018a} addresses credit assignment by approximating the global joint action-value function $Q_{\text{tot}}$ as a monotonic combination of individual action-value functions $Q_i$. This ensures that maximizing $Q_{\text{tot}}$ is equivalent to greedily maximizing each $Q_i$, simplifying coordination.
+    \item \textbf{Multi-Agent PPO (MAPPO)}: A highly effective framework \cite{yuSurprisingEffectivenessPPO2022} that extends the robust single-agent PPO algorithm to the MARL setting, typically utilizing a centralized value function (Critic) to guide decentralized policy updates (Actors) in a CTDE manner.
+\end{itemize}
+
+The success of these frameworks has shifted the focus toward more complex issues, leading to the development of sophisticated architectural extensions like \textbf{Hierarchical Reinforcement Learning (HRL)} and \textbf{Hybrid Frameworks} (discussed next).
+
+\subsubsection{Architectural Extensions: Hierarchical RL for Sparse Rewards}
+
+While CTDE frameworks effectively manage non-stationarity and instantaneous credit assignment, they often struggle with \textbf{sparse and temporally extended rewards}. In real-world resource management problems, such as annual agricultural planning or long-cycle infrastructure maintenance, the agent receives a significant reward only after many thousands of time steps (e.g., the final harvest or the successful completion of a complex mission). This long horizon hinders effective learning, as attributing the final reward to initial actions becomes extremely difficult.
+
+\textbf{Hierarchical Reinforcement Learning (HRL)} is the most suitable framework to address this long-horizon challenge, as it decomposes the complex, single task into a sequence of smaller, manageable sub-tasks.
+
+\paragraph{The Options Framework}
+
+The formal mathematical foundation for task decomposition is the \textbf{Options Framework} \cite{suttonMDPsSemiMDPsFramework1999}. An option is a temporally extended course of action, allowing the high-level policy (the Manager) to operate in a Semi-MDP (SMDP) space—making decisions over longer time intervals—while the low-level policy (the Worker) executes primitive actions. An option $o$ is formally defined by the triplet $\langle I, \pi, \beta \rangle$:
+\begin{itemize}
+    \item $I \subseteq \mathcal{S}$ : The set of states where the option can be \textbf{initiated}.
+    \item $\pi : \mathcal{S} \times \mathcal{A} \to [0, 1]$ : The option's internal \textbf{policy}, dictating primitive actions until termination.
+    \item $\beta : \mathcal{S} \to [0, 1]$ : The \textbf{termination} function, the probability that the option ceases execution in a given state.
+\end{itemize}
+
+\paragraph{Feudal Reinforcement Learning (FRL)}
+
+\textbf{Feudal Reinforcement Learning (FRL)} \cite{dayanFeudalReinforcementLearning1992} is a foundational and influential HRL paradigm specifically designed to leverage this hierarchy for goal-seeking behavior. It employs a two-level control structure:
+\begin{itemize}
+    \item \textbf{The Manager (High-Level):} Operates on a slow timescale, selecting abstract goals (\textit{subgoals}) or directions for the Worker. Its reward is the \textit{global, sparse reward} (e.g., maximizing the final output of the system).
+    \item \textbf{The Worker (Low-Level):} Operates on a fast timescale, executing primitive actions to achieve the Manager's assigned subgoal. Its reward is \textit{intrinsic} and immediate: based on its success in reaching the subgoal.
+\end{itemize}
+This decoupling generates dense, local reward signals for the Worker, effectively solving the temporal credit assignment problem and facilitating the discovery of long-term strategic behaviors necessary for complex resource planning. This section provided the necessary technical foundation to analyze the collected literature, leading us to our systematic review methodology.
 
 \section{Methodology}
 
