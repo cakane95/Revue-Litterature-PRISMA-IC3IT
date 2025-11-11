@@ -46,7 +46,7 @@ alassane.bah@esp.sn}
 \maketitle
 
 \begin{abstract}
-The sustainable management of Socio-Ecological Systems (SES), such as agro-sylvo-pastoral systems (ASPS) in the Sahel, requires adaptive decision-making capable of balancing micro-level objectives (e.g., farmer production targets) with macro-level long-term goals (e.g., environmental sustainability). The coupling of Agent-Based Modeling (ABM) and Multi-Agent Reinforcement Learning (MARL) presents a promising paradigm for designing prescriptive control in these environments. Yet, "Full MARL" approaches face critical barriers to practical, human-centered, real-world applications, including computational cost, state-space explosion, and scalability challenges. This paper presents a systematic review, based on the PRISMA protocol, mapping the state-of-the-art of MARL applications in decentralized resource management during the Deep MARL era (2017–present). Our synthesis of the resulting 75-article corpus reveals a research gap defined by two key findings: (1) a limited number of contributions focused on non-urban SES applications (e.g., agriculture), and (2) a pronounced reliance on non-hierarchical architectures (84\% of articles), which may help explain this gap. Based on this analysis, we conclude that Hierarchical Reinforcement Learning (HRL), which combines high-level strategic agents with lower-level agents for instantaneous execution, emerges as a fruitful architectural research direction. HRL offers a potential pathway toward achieving robust, scalable, and computationally tractable decentralized control in complex SES.
+The sustainable management of Socio-Ecological Systems (SES), such as agro-sylvo-pastoral systems (ASPS) in the Sahel, requires adaptive decision-making capable of balancing micro-level objectives (e.g., farmer production targets) with macro-level long-term goals (e.g., environmental sustainability). The coupling of Agent-Based Modeling (ABM) and Multi-Agent Reinforcement Learning (MARL) presents a promising paradigm for designing prescriptive control in these environments. Yet, "Full MARL" approaches face critical barriers to practical, human-centered, real-world applications, including computational cost, state-space explosion, and scalability challenges. This paper presents a systematic review, based on the PRISMA protocol, mapping the state-of-the-art of MARL applications in decentralized resource management during the Deep MARL era (2017–present). Our synthesis of the resulting 75-article corpus reveals a research gap defined by two key findings: (1) a limited number of contributions focused on non-urban SES applications (e.g., agriculture), and (2) a pronounced reliance on non-hierarchical architectures (84\% of articles), which may help explain this gap. Based on this analysis, we argue that Hierarchical Reinforcement Learning (HRL), which combines high-level strategic agents with lower-level agents for instantaneous execution, emerges as a fruitful architectural research direction. HRL offers a potential pathway toward achieving robust, scalable, and computationally tractable decentralized control in complex SES.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -69,7 +69,13 @@ The remainder of this paper is structured as follows. Section~\ref{motivation} p
 
 The Sahelian crisis exemplifies the challenges of managing complex SES \cite{vermeulenClimateChangeFood2012}. Its fragile agro-sylvo-pastoral systems (ASPS) are driven by complex interactions between crops, livestock, trees, and climate \cite{traoreAgentBasedModelTranshumant2024}. Traditional top-down interventions have often failed by neglecting these territorial dynamics and heterogeneous actor decisions \cite{turnerEnvironmentalRehabilitationVulnerability2021, mirzabaevEconomicEfficiencyTargeting2022}, underscoring the need for an integrated, bottom-up modeling paradigm \cite{gaudouMAELIAMultiagentPlatform2013}.
 
-While the ABM-MARL coupling (Section \ref{introduction}) offers a promising framework for designing adaptive policies in such environments, its real-world effectiveness is constrained by scalability and computational cost, particularly in data-poor contexts. Therefore, the primary objectives of \textit{this paper} are:
+While the ABM-MARL coupling (Section \ref{introduction}) offers a promising framework for designing adaptive policies in such environments, its real-world effectiveness is constrained by scalability and computational cost, particularly in data-poor contexts.
+
+In recent years, RL has been increasingly adopted in agriculture to support farm-level decision-making and process automation. Several studies have explored constrained RL formulations to ensure agronomic feasibility and interpretability. For example, \cite{goldenitsTabularReinforcementLearning2025} developed explainable tabular RL for crop rotation planning, introducing reward perturbations to enhance robustness and trustworthiness. Similarly, \cite{bajaAdaptiveFertilizerManagement2025} applied constrained RL to optimize nitrogen use efficiency under agronomic and environmental constraints, demonstrating the ability of RL agents to learn adaptive fertilization policies. Beyond crop management, RL has also guided robotic control and automation, such as collision-free peduncle grasping for tomato harvesting using deep RL with posture constraints \cite{liPeduncleCollisionfreeGrasping2024}. At a larger operational scale, MARL has been employed to coordinate fleets of agricultural machines for sugarcane bale logistics under equipment breakdown constraints \cite{pitakasoOptimizingSugarcaneBale2025}.
+
+Although these studies illustrate the growing sophistication of RL and MARL in agriculture, they primarily address equipment control or field-scale optimization. At the time of writing this article, we have not identified studies that explicitly model socially heterogeneous agents (e.g. farmers, regulators, etc..) or capture the territorial interactions and adaptive governance processes that characterize real socio-ecological systems. This scientific gap motivates the present review, which systematically maps how coupling ABM and MARL can advance decentralized, learning-driven management in agricultural and environmental contexts.
+
+Therefore, the primary objectives of \textit{this paper} are:
 \begin{enumerate}
     \item To systematically identify and map the current state-of-the-art in coupling ABM and MARL for Socio-Ecological Systems.
     \item To critically analyze the \textit{architectures} of these models, with a specific focus on identifying hybrid or hierarchical structures that mitigate complexity.
@@ -93,7 +99,7 @@ The fundamental questions of "How do we compare policies?" and "How do we find a
 
 \textbf{Value Function ($V^{\pi}$) :}
 \begin{equation}
-V^{\pi}(s) = \mathbb{E}_{\pi} \left[ \sum_{k=0}^{\infty} \gamma^k R_{t+k+1} \mid S_t = s \right]
+V^{\pi}(s) = \sum_{a} \pi(a \mid s) \sum_{s',r} p(s',r \mid s,a)\,\bigl[r + \gamma \, V^{\pi}(s')\bigr].
 \label{eq:V_pi}
 \end{equation}
 
@@ -235,13 +241,9 @@ Overall, while performance reporting is systematic, evaluation practices remain 
 \section{Research Direction}
 \label{research_directions}
 
-Our systematic review reveals two critical, intersecting gaps: a methodological gap and a domain-specific gap. 
+Our systematic review reveals two critical, intersecting gaps: a methodological gap and a domain-specific gap. First, we observed a methodological scarcity of Hierarchical Reinforcement Learning (HRL), which appeared in only 16.0\% of studies. This underrepresentation suggests that the non-hierarchical CTDE frameworks dominating the literature (84.0\%) may not fully capture the multi-scale planning and delayed reward structures characteristic of complex resource management. Second, we identified a domain gap, reflected in the limited number of applications addressing non-urban Socio-Ecological Systems (SES), particularly agriculture. These two gaps appear closely related. The complex, multi-scale, and long-horizon dynamics of SES, such as Sahelian agro-sylvo-pastoral systems, require precisely the kind of temporal and strategic abstraction that HRL provides.
 
-First, we identified a methodological scarcity of Hierarchical Reinforcement Learning (HRL), which appeared in only 16.0\% of studies. This is a significant omission, as the non-hierarchical CTDE frameworks that dominate the literature (84.0\%) are less suited to the multi-scale planning and sparse temporal rewards inherent in complex resource management.
-
-Second, we confirmed a domain gap: a pronounced lack of applications in non-urban Socio-Ecological Systems (SES), particularly agriculture. We posit these two gaps are linked. The complex, multi-scale, and long-horizon nature of SES (e.g., Sahelian agro-sylvo-pastoral systems) requires the exact temporal and strategic abstraction that HRL provides.
-
-Based on this analysis, our research proposes a path forward by developing a hybrid, hierarchical framework tailored specifically to this challenge. The objective is to design a simulation platform where a macro-level "policymaker" agent interacts with a spatially-explicit ABM (Fig.~\ref{fig:abm_rl}).
+Building on this diagnosis, our research proposes a hybrid, hierarchical framework tailored to this challenge. This approach aligns with the “Macro-ABM decision-making” scenario identified by \cite{Zhang20232170}, in which Machine Learning operates at the system level to support high-level governance and policy optimization. The objective is to design a simulation platform where a macro-level “policymaker” agent interacts dynamically with a spatially explicit ABM (Fig.~\ref{fig:abm_rl}).
 
 % --- Diagramme de flux PRISMA ---
 \begin{figure}[htbp]
@@ -251,7 +253,7 @@ Based on this analysis, our research proposes a path forward by developing a hyb
 \end{figure}
 % -----------------------------------------------------------------
 
-In this framework, the macro-agent (trained via RL) operates on a slow timescale, learning optimal, long-term carbon-capture strategies at the territorial scale. The micro-agents (e.g., farmers, herders) operate on a fast timescale within the ABM, employing cognitively plausible rules, such as a Belief-Desire-Intention (BDI) architecture \cite{bratmanIntentionPlansPractical1987}. This HRL-ABM hybrid allows for the systematic evaluation of carbon-capture policies under uncertainty while remaining computationally tractable by streamlining the state and action spaces for the high-level learning agent.
+In this framework, the macro-agent, trained via Reinforcement Learning, operationalizes this “macro-decision-making” role. It acts on a slow timescale, learning optimal long-term carbon-capture and resource-management strategies at the territorial level. The micro-agents (e.g., farmers, herders) operate on a faster timescale within the ABM, following cognitively plausible behavioral rules such as a Belief–Desire–Intention (BDI) architecture \cite{bratmanIntentionPlansPractical1987}. This HRL-ABM hybrid allows for the systematic evaluation of carbon-capture policies under uncertainty while remaining computationally tractable by streamlining the state and action spaces for the high-level learning agent.
 
 \section{Conclusion}
 \label{conclusion}
